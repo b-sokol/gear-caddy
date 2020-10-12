@@ -20,7 +20,7 @@ async function index(req, res) {
 async function create(req, res) {
   try {
     const pedal = await Pedal.create(req.body);
-    res.status(201).json(puppy);
+    res.status(201).json(pedal);
   } catch (err) {
     res.status(404).json(err);
   }
@@ -51,11 +51,9 @@ async function update(req, res) {
 async function deleteOne(req, res) {
   try {
     const deletedPedal = await Pedal.findByIdAndDelete(req.params.id);
-    res
-      .status(200)
-      .json({
-        message: `${deletedPedal.make} ${deletedPedal.model} has been deleted`,
-      });
+    res.status(200).json({
+      message: `${deletedPedal.make} ${deletedPedal.model} has been deleted`,
+    });
   } catch (err) {
     res.status(404).json(err);
   }

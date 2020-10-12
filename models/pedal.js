@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const pedalSchema = new Schema(
+const pedalSchema = new mongoose.Schema(
   {
-    make: String,
-    model: String,
-    type: String,
+    make: { type: String, required: true },
+    model: { type: String, required: true },
+    type: { type: String, required: true },
     serial: String,
-    hasFXLoop: Boolean,
     year: String,
+    hasFXLoop: Boolean,
     inFXLoop: Boolean,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: true,
