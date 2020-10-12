@@ -29,17 +29,18 @@
 
 body {
   background-image: url("https://cdn.hipwallpaper.com/i/55/64/ejDZp9.png");
+  background-size: cover;
 }
 h1 {
   text-align: center;
   margin: auto;
-  width: 50%;
+  width: auto;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  line-height: 200px;
-  height: 200px;
+  align-content: center;
+  background: red
 
 }
 
