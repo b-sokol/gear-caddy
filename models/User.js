@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const Schema = mongoose.Schema;
 const SALT_ROUNDS = 6;
 
-const userSchema = new mongoose.Schema(
+const instSchema = new Schema({
+  instrument: String,
+});
+
+const userSchema = new Schema(
   {
     first: { type: String, required: true },
     last: { type: String, required: true },
@@ -16,7 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     password: String,
     primInst: { type: String, required: true },
-    // secInsts: [String],
+    secInsts: [instSchema],
   },
   {
     timestamps: true,

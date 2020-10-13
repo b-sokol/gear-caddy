@@ -1,4 +1,4 @@
-/* .App {
+.App {
   min-height: 100vh;
   display: grid;
   grid-template-rows: 7vmin auto;
@@ -25,35 +25,4 @@
 .App main h1 {
   color: var(--secondary-dark);
   margin-bottom: 5vmin;
-} */
-
-body {
-  background-image: url("https://cdn.hipwallpaper.com/i/55/64/ejDZp9.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: red;
-}
-h1 {
-  text-align: center;
-  margin: auto;
-  width: auto;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  background: red
-
-}
-
-.RIP{
-  text-align: center;
-  margin: auto;
-  width: 50%;
-  color: gray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 200px;
-  height: 200px;
 }
