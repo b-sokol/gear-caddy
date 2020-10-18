@@ -1,4 +1,5 @@
 const Pedal = require('../../models/pedal');
+const User = require('../../models/User');
 
 module.exports = {
   index,
@@ -10,7 +11,7 @@ module.exports = {
 
 async function index(req, res) {
   try {
-    const pedals = await Pedal.find({});
+    const pedals = await Pedal.find({user: req.user._id});
     res.status(200).json(pedals);
   } catch (err) {
     res.status(404).json(err);
@@ -20,6 +21,8 @@ async function index(req, res) {
 async function create(req, res) {
   try {
     const pedal = await Pedal.create(req.body);
+    pedal.user = req.user._id;
+    pedal.save()
     res.status(201).json(pedal);
   } catch (err) {
     res.status(404).json(err);

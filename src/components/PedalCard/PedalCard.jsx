@@ -17,10 +17,8 @@ function PedalCard({ pedal }) {
           <dd>{pedal.type}</dd>
           <dt>Serial Number</dt>
           <dd>{pedal.serial}</dd>
-          <dt>Has FX Loop?</dt>
-          <dd>{pedal.hasFXLoop}</dd>
-          <dt>In An FX Loop?</dt>
-          <dd>{pedal.inFXLoop}</dd>
+          {/* <dt>Has FX Loop?</dt>
+          <dd>{pedal.hasFXLoop}</dd> */}
         </dl>
       </div>
       <div className="panel-footer">

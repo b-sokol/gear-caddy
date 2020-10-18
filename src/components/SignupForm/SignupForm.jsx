@@ -19,7 +19,7 @@ class SignupForm extends Component {
     if (['instrument'].includes(e.target.className)) {
       let secInsts = [...this.state.secInsts];
       secInsts[e.target.dataset.id][e.target.className] = e.target.value;
-      this.setState({ secInsts }, () => console.log(this.state.secInsts));
+      // this.setState({ secInsts }, () => console.log(this.state.secInsts));
     } else {
       this.props.updateMessage('');
       this.setState({

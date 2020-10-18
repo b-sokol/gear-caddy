@@ -1,19 +1,43 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Route, Link, Switch, NavLink } from 'react-router-dom';
+import { Route, Link, Switch, NavLink, Redirect } from 'react-router-dom';
 import pedalService from '../../utils/pedalService';
 import PedalListPage from '../../pages/PedalListPage/PedalListPage';
 import AddPedalPage from '../../pages/AddPedalPage/AddPedalPage';
 import PedalDetailPage from '../../pages/PedalDetailPage/PedalDetailPage';
 import EditPedalPage from '../../pages/EditPedalPage/EditPedalPage';
+import rigService from '../../utils/rigService';
+import RigListPage from '../../pages/RigListPage/RigListPage';
+import AddRigPage from '../../pages/AddRigPage/AddRigPage';
+import RigDetailPage from '../../pages/RigDetailPage/RigDetailPage';
+import EditRigPage from '../../pages/EditRigPage/EditRigPage';
+import OrganizeRigPage from '../../pages/OrganizeRigPage/OrganizeRigPage';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../../pages/SignupPage/SignupPage';
 import userService from '../../utils/userService';
 
 class App extends Component {
-  state = {
-    pedals: [],
-    user: userService.getUser(),
+  constructor() {
+    super();
+    this.state = {
+      ...this.getInitialState(),
+      user: userService.getUser(),
+    };
+  }
+
+  getInitialState() {
+    return {
+      pedals: [],
+      rigs: [],
+    };
+  }
+
+  handleLoadPedals = (pedals) => {
+    this.setState({ pedals });
+  };
+
+  handleLoadRigs = (rigs) => {
+    this.setState({ rigs });
   };
 
   handleAddPedal = async (newPedalData) => {
@@ -46,6 +70,36 @@ class App extends Component {
     );
   };
 
+  handleAddRig = async (newRigData) => {
+    const newRig = await rigService.create(newRigData);
+    this.setState(
+      (state) => ({
+        rigs: [...state.rigs, newRig],
+      }),
+      () => this.props.history.push('/rigs')
+    );
+  };
+
+  handleUpdateRig = async (updatedRigData) => {
+    const updatedRig = await rigService.update(updatedRigData);
+    const newRigsArray = this.state.rigs.map((r) =>
+      r._id === updatedRig._id ? updatedRig : r
+    );
+    this.setState({ rigs: newRigsArray }, () =>
+      this.props.history.push('/rigs')
+    );
+  };
+
+  handleDeleteRig = async (id) => {
+    await rigService.deleteRig(id);
+    this.setState(
+      (state) => ({
+        rigs: state.rigs.filter((r) => r._id !== id),
+      }),
+      () => this.props.history.push('/rigs')
+    );
+  };
+
   handleSignupOrLogin = () => {
     this.setState({
       user: userService.getUser(),
@@ -55,12 +109,13 @@ class App extends Component {
 
   async componentDidMount() {
     const pedals = await pedalService.index();
-    this.setState({ pedals });
+    const rigs = await rigService.index();
+    this.setState({ pedals, rigs });
   }
 
   handleLogout = () => {
     userService.logout();
-    this.setState({ user: null });
+    this.setState({ ...this.getInitialState(), user: null });
   };
 
   render() {
@@ -75,8 +130,16 @@ class App extends Component {
                   Pedals LIST
                 </NavLink>
                 &nbsp;&nbsp;&nbsp;
+                <NavLink exact to="/rigs">
+                  Rigs LIST
+                </NavLink>
+                &nbsp;&nbsp;&nbsp;
                 <NavLink exact to="/add">
                   ADD Pedal
+                </NavLink>
+                &nbsp; &nbsp;&nbsp;
+                <NavLink exact to="/rigs/add">
+                  ADD Rig
                 </NavLink>
                 &nbsp; &nbsp;&nbsp;
                 <Link to="" onClick={this.handleLogout}>
@@ -107,35 +170,136 @@ class App extends Component {
             <Route
               exact
               path="/"
-              render={() => (
-                <PedalListPage
-                  user={this.state.user}
-                  pedals={this.state.pedals}
-                  handleDeletePedal={this.handleDeletePedal}
-                />
-              )}
+              render={() =>
+                userService.getUser() ? (
+                  <PedalListPage
+                    user={this.state.user}
+                    pedals={this.state.pedals}
+                    handleLoadPedals={this.handleLoadPedals}
+                    handleDeletePedal={this.handleDeletePedal}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/rigs"
+              render={() =>
+                userService.getUser() ? (
+                  <RigListPage
+                    user={this.state.user}
+                    rigs={this.state.rigs}
+                    pedals={this.state.pedals}
+                    handleLoadPedals={this.handleLoadPedals}
+                    handleLoadRigs={this.handleLoadRigs}
+                    handleDeleteRig={this.handleDeleteRig}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact
               path="/add"
-              render={() => (
-                <AddPedalPage handleAddPedal={this.handleAddPedal} />
-              )}
+              render={() =>
+                userService.getUser() ? (
+                  <AddPedalPage handleAddPedal={this.handleAddPedal} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact
               path="/details"
-              render={({ location }) => <PedalDetailPage location={location} />}
+              render={({ location }) =>
+                userService.getUser() ? (
+                  <PedalDetailPage location={location} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact
               path="/edit"
-              render={({ location }) => (
-                <EditPedalPage
-                  handleUpdatePedal={this.handleUpdatePedal}
-                  location={location}
-                />
-              )}
+              render={({ location }) =>
+                userService.getUser() ? (
+                  <EditPedalPage
+                    handleUpdatePedal={this.handleUpdatePedal}
+                    location={location}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/rigs/add"
+              render={() =>
+                userService.getUser() ? (
+                  <AddRigPage
+                    pedals={this.state.pedals}
+                    handleAddRig={this.handleAddRig}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/rigs/details"
+              render={({ location }) =>
+                userService.getUser() ? (
+                  <RigDetailPage
+                    pedals={this.state.pedals}
+                    location={location}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/rigs/edit"
+              render={({ location, history }) =>
+                userService.getUser() ? (
+                  <EditRigPage
+                    location={location}
+                    history={history}
+                    user={this.state.user}
+                    pedals={this.state.pedals}
+                    handleUpdateRig={this.handleUpdateRig}
+                    handleLoadPedals={this.handleLoadPedals}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/rigs/organize"
+              render={({ location, history }) =>
+                userService.getUser() ? (
+                  <OrganizeRigPage
+                    location={location}
+                    history={history}
+                    user={this.state.user}
+                    pedals={this.state.pedals}
+                    handleUpdateRig={this.handleUpdateRig}
+                    handleLoadPedals={this.handleLoadPedals}
+                  />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
             />
             <Route
               exact

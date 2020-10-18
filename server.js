@@ -7,8 +7,9 @@ const favicon = require('serve-favicon');
 require('dotenv').config();
 require('./config/database');
 
-const pedalsRouter = require('./routes/api/pedals');
 const usersRouter = require('./routes/api/users');
+const pedalsRouter = require('./routes/api/pedals');
+const rigsRouter = require('./routes/api/rigs');
 
 const app = express();
 
@@ -18,8 +19,10 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use('/api/pedals', pedalsRouter);
 app.use('/api/users', usersRouter);
+app.use(require('./config/auth'));
+app.use('/api/pedals', pedalsRouter);
+app.use('/api/rigs', rigsRouter);
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));

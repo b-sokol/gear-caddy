@@ -1,9 +1,17 @@
-function setToken(token) {
-  if (token) {
-    localStorage.setItem('token', token);
-  } else {
-    localStorage.removeItem('token');
-  }
+export default {
+  setToken,
+  getToken,
+  getUserFromToken,
+  removeToken,
+};
+
+function removeToken() {
+  localStorage.removeItem('token');
+}
+
+function getUserFromToken() {
+  const token = getToken();
+  return token ? JSON.parse(atob(token.split('.')[1])).user : null;
 }
 
 function getToken() {
@@ -18,18 +26,6 @@ function getToken() {
   return token;
 }
 
-function getUserFromToken() {
-  const token = getToken();
-  return token ? JSON.parse(atob(token.split('.')[1])).user : null;
+function setToken(token) {
+  localStorage.setItem('token', token);
 }
-
-function removeToken() {
-  localStorage.removeItem('token');
-}
-
-export default {
-  setToken,
-  getToken,
-  removeToken,
-  getUserFromToken,
-};

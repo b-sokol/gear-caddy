@@ -9,8 +9,7 @@ class AddPedalPage extends Component {
       type: '',
       serial: '',
       year: '',
-      hasFXLoop: 'false',
-      inFXLoop: 'false',
+      // hasFXLoop: 'false',
     },
   };
 
@@ -89,7 +88,7 @@ class AddPedalPage extends Component {
               onChange={this.handleChange}
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Does Pedal Have An FX Loop?</label>
             <input
               className="form-control"
@@ -97,16 +96,7 @@ class AddPedalPage extends Component {
               value={this.state.formData.hasFXLoop}
               onChange={this.handleChange}
             />
-          </div>
-          <div className="form-group">
-            <label>Is Pedal In An FX Loop?</label>
-            <input
-              className="form-control"
-              name="inFXLoop"
-              value={this.state.formData.inFXLoop}
-              onChange={this.handleChange}
-            />
-          </div>
+          </div> */}
           <button
             type="submit"
             className="btn"

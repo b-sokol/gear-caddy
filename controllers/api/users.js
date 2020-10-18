@@ -5,16 +5,6 @@ const SECRET = process.env.SECRET;
 module.exports = {
   signup,
   login,
-
-
-
-
-
-  index,
-  create,
-  show,
-  update,
-  delete: deleteOne,
 };
 
 async function signup(req, res) {
@@ -57,54 +47,3 @@ function createJWT(user) {
 
 
 
-
-async function index(req, res) {
-  try {
-    const users = await User.find({});
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(404).json(err);
-  }
-}
-
-async function create(req, res) {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(404).json(err);
-  }
-}
-
-async function show(req, res) {
-  try {
-    const user = await User.findById(req.params.id);
-    res.status(200).json(user);
-  } catch (err) {
-    res.status(404).json(err);
-  }
-}
-
-async function update(req, res) {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(404).json(err);
-  }
-}
-
-async function deleteOne(req, res) {
-  try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    res.status(200).json({
-      message: `${deletedUser.make} ${deletedUser.model} has been deleted`,
-    });
-  } catch (err) {
-    res.status(404).json(err);
-  }
-}
