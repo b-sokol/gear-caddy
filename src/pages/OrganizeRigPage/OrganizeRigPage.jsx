@@ -37,7 +37,7 @@ class OrganizeRigPage extends Component {
       chains: this.state.chains,
     }
     console.log(organizedRig)
-    this.props.handleUpdateeRig(organizedRig);
+    this.props.handleUpdateRig(organizedRig);
   };
 
   onDragEnd = (result) => {
