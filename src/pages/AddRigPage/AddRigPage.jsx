@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import pedalService from '../../utils/pedalService';
 
 class AddRigPage extends Component {
   state = {
@@ -9,8 +8,6 @@ class AddRigPage extends Component {
       hasFXLoop: 'false',
     },
   };
-
-
 
   formRef = React.createRef();
 

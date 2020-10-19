@@ -82,11 +82,6 @@ class OrganizeRigPage extends Component {
       newPedals.splice(source.index, 1);
       newPedals.splice(destination.index, 0, draggableId);
 
-      const newChain = {
-        ...start,
-        pedals: newPedals,
-      };
-
       const newChains = [...this.state.chains];
       newChains[startIdx] = { ...newChains[startIdx], pedals: newPedals };
 
@@ -101,17 +96,9 @@ class OrganizeRigPage extends Component {
 
     const startPedals = [...start.pedals];
     startPedals.splice(source.index, 1);
-    const newStart = {
-      ...start,
-      pedals: startPedals,
-    };
 
     const finishPedals = [...finish.pedals];
     finishPedals.splice(destination.index, 0, draggableId);
-    const newFinish = {
-      ...finish,
-      pedals: finishPedals,
-    };
 
     const newChains = [...this.state.chains];
     newChains[startIdx] = { ...newChains[startIdx], pedals: startPedals };
