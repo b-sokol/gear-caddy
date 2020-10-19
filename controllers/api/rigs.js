@@ -51,9 +51,20 @@ async function show(req, res) {
 
 async function update(req, res) {
   try {
+    const findRig = await Rig.findById(req.params.id);
     const updatedRig = await Rig.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
+    if (findRig.hasFXLoop !== updatedRig.hasFXLoop) {
+      if (updatedRig.hasFXLoop) {
+        const fxChain = new Chain({ name: 'FX Loop', pedals: [] });
+        updatedRig.chains.push(fxChain);
+      } else {
+        updatedRig.chains.splice(updatedRig.chains.indexOf("FX Loop"), 1)
+      }
+      //filter out all pedals that are currently being used in rig from this.state.pedals and add to unused
+      updatedRig.save()
+    }
     res.status(200).json(updatedRig);
   } catch (err) {
     res.status(404).json(err);
